@@ -1,27 +1,30 @@
 <template>
   <div>
     <h2>You are on the gallery page</h2>
-    <div>
+    <p v-if="loading">The gallery is loading</p>
+    <div v-else-if="seeds">
       <gallery-navigation :seeds="seeds" v-on:navigate="handleNavigation" />
-      {{ currentSeed }}
+      <image-loader :seed="currentSeed" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, Ref } from "@vue/composition-api";
+import { useResult } from "@vue/apollo-composable";
 import { useGetGalleryQuery } from "@/models.generated";
 import GalleryNavigation from "@/components/GalleryNavigation.vue";
-import { useResult } from "@vue/apollo-composable";
+import ImageLoader from "@/components/ImageLoader.vue";
 
 export default defineComponent({
   name: "Gallery",
   components: {
-    "gallery-navigation": GalleryNavigation
+    "gallery-navigation": GalleryNavigation,
+    "image-loader": ImageLoader
   },
   setup() {
     const currentSeed: Ref<string> = ref("");
-    const { result, onResult } = useGetGalleryQuery();
+    const { result, loading, onResult } = useGetGalleryQuery();
     const seeds = useResult(result, [], data => data.gallery.seeds);
 
     onResult(function(result) {
@@ -38,7 +41,7 @@ export default defineComponent({
       currentSeed.value = seed;
     }
 
-    return { seeds, currentSeed, handleNavigation };
+    return { seeds, loading, currentSeed, handleNavigation };
   }
 });
 </script>
