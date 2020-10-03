@@ -12,6 +12,39 @@ const typeDefs = {
       "kind": "ObjectTypeDefinition",
       "name": {
         "kind": "Name",
+        "value": "Gallery"
+      },
+      "interfaces": [],
+      "directives": [],
+      "fields": [
+        {
+          "kind": "FieldDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "seeds"
+          },
+          "arguments": [],
+          "type": {
+            "kind": "NonNullType",
+            "type": {
+              "kind": "ListType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "ID"
+                }
+              }
+            }
+          },
+          "directives": []
+        }
+      ]
+    },
+    {
+      "kind": "ObjectTypeDefinition",
+      "name": {
+        "kind": "Name",
         "value": "Image"
       },
       "interfaces": [],
@@ -103,6 +136,25 @@ const typeDefs = {
             }
           },
           "directives": []
+        },
+        {
+          "kind": "FieldDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "gallery"
+          },
+          "arguments": [],
+          "type": {
+            "kind": "NonNullType",
+            "type": {
+              "kind": "NamedType",
+              "name": {
+                "kind": "Name",
+                "value": "Gallery"
+              }
+            }
+          },
+          "directives": []
         }
       ]
     }
@@ -121,6 +173,11 @@ export type Scalars = {
   Float: number;
 };
 
+export type Gallery = {
+  __typename?: 'Gallery';
+  seeds: Array<Maybe<Scalars['ID']>>;
+};
+
 export type Image = {
   __typename?: 'Image';
   id: Scalars['ID'];
@@ -130,6 +187,7 @@ export type Image = {
 export type Query = {
   __typename?: 'Query';
   image: Image;
+  gallery: Gallery;
 };
 
 
@@ -216,8 +274,9 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
-  Image: ResolverTypeWrapper<string>;
+  Gallery: ResolverTypeWrapper<string>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
+  Image: ResolverTypeWrapper<string>;
   String: ResolverTypeWrapper<Scalars['String']>;
   Query: ResolverTypeWrapper<{}>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
@@ -225,11 +284,17 @@ export type ResolversTypes = ResolversObject<{
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
-  Image: string;
+  Gallery: string;
   ID: Scalars['ID'];
+  Image: string;
   String: Scalars['String'];
   Query: {};
   Boolean: Scalars['Boolean'];
+}>;
+
+export type GalleryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Gallery'] = ResolversParentTypes['Gallery']> = ResolversObject<{
+  seeds: Resolver<Array<Maybe<ResolversTypes['ID']>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 
 export type ImageResolvers<ContextType = any, ParentType extends ResolversParentTypes['Image'] = ResolversParentTypes['Image']> = ResolversObject<{
@@ -240,9 +305,11 @@ export type ImageResolvers<ContextType = any, ParentType extends ResolversParent
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   image: Resolver<ResolversTypes['Image'], ParentType, ContextType, RequireFields<QueryImageArgs, 'id'>>;
+  gallery: Resolver<ResolversTypes['Gallery'], ParentType, ContextType>;
 }>;
 
 export type Resolvers<ContextType = any> = ResolversObject<{
+  Gallery: GalleryResolvers<ContextType>;
   Image: ImageResolvers<ContextType>;
   Query: QueryResolvers<ContextType>;
 }>;

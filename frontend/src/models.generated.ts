@@ -13,6 +13,11 @@ export type Scalars = {
   Float: number;
 };
 
+export type Gallery = {
+  __typename?: 'Gallery';
+  seeds: Array<Maybe<Scalars['ID']>>;
+};
+
 export type Image = {
   __typename?: 'Image';
   id: Scalars['ID'];
@@ -22,6 +27,7 @@ export type Image = {
 export type Query = {
   __typename?: 'Query';
   image: Image;
+  gallery: Gallery;
 };
 
 
