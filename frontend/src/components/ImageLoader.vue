@@ -48,7 +48,7 @@ export default defineComponent({
 
     const queryVariables: { id: string } = reactive({ id: "" });
     const queryOptions: { enabled: boolean } = reactive({ enabled: false });
-    const { result, loading, refetch } = useGetImageQuery(
+    const { result, loading } = useGetImageQuery(
       queryVariables,
       queryOptions
     );
@@ -61,10 +61,7 @@ export default defineComponent({
       // https://github.com/vuejs/vue-apollo/issues/909
       if (!queryOptions.enabled) {
         queryOptions.enabled = true;
-        return;
       }
-
-      refetch();
     }
 
     loadImage(props.seed);
