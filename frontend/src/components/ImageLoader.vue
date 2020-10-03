@@ -24,7 +24,7 @@ import {
 } from "@vue/composition-api";
 import { useResult } from "@vue/apollo-composable";
 import { useGetImageQuery } from "@/models.generated";
-import Annotation from "@/models/Annotation";
+import { Annotation } from "@/models/Annotation";
 import AnnotationLayer from "@/components/annotation/AnnotationLayer.vue";
 
 export default defineComponent({

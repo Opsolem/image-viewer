@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { defineComponent, provide, Ref, ref } from "@vue/composition-api";
-import Annotation from "@/models/Annotation";
+import { Annotation } from "@/models/Annotation";
 
 export default defineComponent({
   name: "App",

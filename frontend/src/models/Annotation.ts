@@ -7,4 +7,20 @@ interface Annotation {
     points: Point[]
 }
 
-export default Annotation;
+interface PolygonProps {
+    key: string,
+    points: Point[]
+}
+
+interface TextProps {
+    key: string,
+    label: string,
+    point: Point
+}
+
+
+export {
+    Annotation,
+    PolygonProps,
+    TextProps
+};
