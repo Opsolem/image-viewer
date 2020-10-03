@@ -5,7 +5,9 @@
       <p>
         The image <strong>{{ image.id }}</strong> :
       </p>
-      <img :src="image.src" :alt="image.id">
+      <annotation-layer :annotations="imageAnnotations">
+        <img :src="image.src" :alt="image.id">
+      </annotation-layer>
     </div>
   </div>
 </template>
@@ -23,8 +25,13 @@ import {
 import { useResult } from "@vue/apollo-composable";
 import { useGetImageQuery } from "@/models.generated";
 import Annotation from "@/models/Annotation";
+import AnnotationLayer from "@/components/annotation/AnnotationLayer.vue";
 
 export default defineComponent({
+  name: "ImageLoader",
+  components: {
+    "annotation-layer": AnnotationLayer
+  },
   props: {
     seed: {
       type: String as PropType<string>,
