@@ -1,0 +1,6 @@
+query GetImage($id: ID!) {
+  image(id: $id) {
+    id
+    src
+  }
+}

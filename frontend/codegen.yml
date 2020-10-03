@@ -1,0 +1,10 @@
+overwrite: true
+generates:
+  src/models.generated.ts:
+    schema: '../backend/src/schema/*.graphql'
+    documents:
+      - './src/graphql/*.graphql'
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-vue-apollo

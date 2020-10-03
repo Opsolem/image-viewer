@@ -1,0 +1,31 @@
+{
+  "name": "backend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "watch": "concurrently -k -p '[{name}]' -n TypeScript,NodeJS,GraphQL -c 'blue,green,yellow' 'npm:watch:code' 'npm:watch:node' 'npm:watch:graphql'",
+    "watch:code": "tsc -b . --watch --preserveWatchOutput",
+    "watch:node": "tsc -b . && nodemon dist/src/index.js",
+    "watch:graphql": "graphql-codegen --config codegen.yml --watch",
+    "test": "jest --coverage",
+    "lint": "prettier --write src"
+  },
+  "dependencies": {
+    "apollo-server": "^2.18.1",
+    "ts-jest": "^26.4.0"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^1.17.8",
+    "@graphql-codegen/typescript": "^1.17.9",
+    "@graphql-codegen/typescript-operations": "^1.17.8",
+    "@graphql-codegen/typescript-resolvers": "^1.17.9",
+    "@types/jest": "^26.0.14",
+    "concurrently": "^5.3.0",
+    "graphql": "^15.3.0",
+    "graphql-tag": "^2.11.0",
+    "jest": "^26.4.2",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.1.2",
+    "typescript": "^4.0.3"
+  }
+}

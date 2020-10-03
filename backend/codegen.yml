@@ -1,0 +1,16 @@
+# If you edit this file, restart the dev server manually.
+overwrite: true
+generates:
+  src/models.generated.ts:
+    schema: "src/schema/*.graphql"
+    plugins:
+      - "src/codegen/typescript-typedefs.js"
+      - typescript
+      - typescript-resolvers
+    config:
+      avoidOptionals: true
+      useIndexSignature: true
+      scalars:
+        Date: Date
+      mappers:
+        Image: string
