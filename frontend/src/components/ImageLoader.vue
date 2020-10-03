@@ -12,13 +12,17 @@
 
 <script lang="ts">
 import {
+  computed,
   defineComponent,
+  inject,
   PropType,
   reactive,
+  Ref,
   watch
 } from "@vue/composition-api";
 import { useResult } from "@vue/apollo-composable";
 import { useGetImageQuery } from "@/models.generated";
+import Annotation from "@/models/Annotation";
 
 export default defineComponent({
   props: {
@@ -28,6 +32,13 @@ export default defineComponent({
     }
   },
   setup(props) {
+    const annotations: Ref<Annotation[]> = inject("annotations");
+    const imageAnnotations = computed(function() {
+      return annotations.value.filter(
+        (annotation: Annotation) => annotation.imageId === props.seed
+      );
+    });
+
     const queryVariables: { id: string } = reactive({ id: "" });
     const queryOptions: { enabled: boolean } = reactive({ enabled: false });
     const { result, loading, refetch } = useGetImageQuery(
@@ -53,7 +64,7 @@ export default defineComponent({
 
     watch(() => props.seed, loadImage);
 
-    return { image, loading };
+    return { image, imageAnnotations, loading };
   }
 });
 </script>
