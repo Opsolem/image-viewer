@@ -3,8 +3,8 @@
     <h1>You are on the homepage</h1>
     <p>
       You can
-      <router-link :to="{ name: 'images-item', params: { id: 'my-image' } }">
-        load my image
+      <router-link :to="{ name: 'gallery' }">
+        access to my gallery
       </router-link>
       .
     </p>
