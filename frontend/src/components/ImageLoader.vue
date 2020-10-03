@@ -3,7 +3,7 @@
     <p v-if="loading">The image is loading</p>
     <div v-else-if="image">
       <p>
-        The image <strong>{{ image.id }}</strong> :
+        The image <strong>{{ image.id }}</strong>
       </p>
       <annotation-layer :annotations="imageAnnotations">
         <img :src="image.src" :alt="image.id">
@@ -18,14 +18,12 @@ import {
   defineComponent,
   inject,
   PropType,
-  reactive,
   Ref,
   watch
 } from "@vue/composition-api";
-import { useResult } from "@vue/apollo-composable";
-import { useGetImageQuery } from "@/models.generated";
 import { Annotation } from "@/models/Annotation";
 import AnnotationLayer from "@/components/annotation/AnnotationLayer.vue";
+import useImage from "@/hooks/use-image";
 
 export default defineComponent({
   name: "ImageLoader",
@@ -46,26 +44,8 @@ export default defineComponent({
       );
     });
 
-    const queryVariables: { id: string } = reactive({ id: "" });
-    const queryOptions: { enabled: boolean } = reactive({ enabled: false });
-    const { result, loading } = useGetImageQuery(
-      queryVariables,
-      queryOptions
-    );
-    const image = useResult(result, null, data => data.image);
-
-    function loadImage(seed: string) {
-      queryVariables.id = seed;
-
-      // to discuss
-      // https://github.com/vuejs/vue-apollo/issues/909
-      if (!queryOptions.enabled) {
-        queryOptions.enabled = true;
-      }
-    }
-
+    const { image, loading, loadImage } = useImage();
     loadImage(props.seed);
-
     watch(() => props.seed, loadImage);
 
     return { image, imageAnnotations, loading };

@@ -3,6 +3,7 @@
     <button @click="previous" :disabled="canNavigateToPrevious">
       Previous
     </button>
+    {{ `${index + 1} / ${seeds.length}` }}
     <button @click="next" :disabled="canNavigateToNext">
       Next
     </button>
@@ -56,6 +57,7 @@ export default defineComponent({
     }
 
     return {
+      index,
       canNavigateToPrevious,
       canNavigateToNext,
       previous,
@@ -64,3 +66,4 @@ export default defineComponent({
   }
 });
 </script>
+

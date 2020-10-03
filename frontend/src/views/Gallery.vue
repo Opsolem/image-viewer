@@ -15,6 +15,7 @@ import { useResult } from "@vue/apollo-composable";
 import { useGetGalleryQuery } from "@/models.generated";
 import GalleryNavigation from "@/components/GalleryNavigation.vue";
 import ImageLoader from "@/components/ImageLoader.vue";
+import useImage from "@/hooks/use-image";
 
 export default defineComponent({
   name: "Gallery",
@@ -27,6 +28,16 @@ export default defineComponent({
     const { result, loading, onResult } = useGetGalleryQuery();
     const seeds = useResult(result, [], data => data.gallery.seeds);
 
+    const { loadImage } = useImage();
+
+    function preLoadNextImage() {
+      const currentIndex = seeds.value.findIndex(s => s === currentSeed.value);
+
+      if (currentIndex !== -1 && seeds.value[currentIndex + 1]) {
+        loadImage(seeds.value[currentIndex + 1]);
+      }
+    }
+
     onResult(function(result) {
       const resultSeeds = result?.data.gallery.seeds;
 
@@ -35,10 +46,12 @@ export default defineComponent({
       }
 
       currentSeed.value = resultSeeds[0];
+      preLoadNextImage();
     });
 
     function handleNavigation(seed: string) {
       currentSeed.value = seed;
+      preLoadNextImage();
     }
 
     return { seeds, loading, currentSeed, handleNavigation };
