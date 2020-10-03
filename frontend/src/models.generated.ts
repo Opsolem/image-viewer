@@ -35,6 +35,17 @@ export type QueryImageArgs = {
   id: Scalars['ID'];
 };
 
+export type GetGalleryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetGalleryQuery = (
+  { __typename?: 'Query' }
+  & { gallery: (
+    { __typename?: 'Gallery' }
+    & Pick<Gallery, 'seeds'>
+  ) }
+);
+
 export type GetImageQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -49,6 +60,33 @@ export type GetImageQuery = (
 );
 
 
+export const GetGalleryDocument = gql`
+    query GetGallery {
+  gallery {
+    seeds
+  }
+}
+    `;
+
+/**
+ * __useGetGalleryQuery__
+ *
+ * To run a query within a Vue component, call `useGetGalleryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGalleryQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useGetGalleryQuery(
+ *   {
+ *   }
+ * );
+ */
+export function useGetGalleryQuery(options: VueApolloComposable.UseQueryOptions<GetGalleryQuery, GetGalleryQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetGalleryQuery, GetGalleryQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetGalleryQuery, GetGalleryQueryVariables>> = {}) {
+            return VueApolloComposable.useQuery<GetGalleryQuery, undefined>(GetGalleryDocument, undefined, options);
+          }
+export type GetGalleryQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetGalleryQuery, GetGalleryQueryVariables>;
 export const GetImageDocument = gql`
     query GetImage($id: ID!) {
   image(id: $id) {
