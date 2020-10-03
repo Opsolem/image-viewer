@@ -36,21 +36,22 @@ export default defineComponent({
     );
     const image = useResult(result, null, data => data.image);
 
-    watch(
-      () => props.seed,
-      function(newSeed) {
-        queryVariables.id = newSeed;
+    function loadImage(seed: string) {
+      queryVariables.id = seed;
 
-        // to discuss
-        // https://github.com/vuejs/vue-apollo/issues/909
-        if (!queryOptions.enabled) {
-          queryOptions.enabled = true;
-          return;
-        }
-
-        refetch();
+      // to discuss
+      // https://github.com/vuejs/vue-apollo/issues/909
+      if (!queryOptions.enabled) {
+        queryOptions.enabled = true;
+        return;
       }
-    );
+
+      refetch();
+    }
+
+    loadImage(props.seed);
+
+    watch(() => props.seed, loadImage);
 
     return { image, loading };
   }
