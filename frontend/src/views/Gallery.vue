@@ -33,8 +33,13 @@ export default defineComponent({
     function preLoadNextImage() {
       const currentIndex = seeds.value.findIndex(s => s === currentSeed.value);
 
-      if (currentIndex !== -1 && seeds.value[currentIndex + 1]) {
-        loadImage(seeds.value[currentIndex + 1]);
+      if (currentIndex === -1) {
+        return;
+      }
+
+      const nextSeed = seeds.value[currentIndex + 1];
+      if (nextSeed) {
+        loadImage(nextSeed);
       }
     }
 
