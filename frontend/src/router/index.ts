@@ -15,10 +15,15 @@ const routes: Array<RouteConfig> = [
     component: Image
   },
   {
+    path: "/gallery/:seed",
+    name: "gallery-image",
+    component: Gallery
+  },
+  {
     path: "/gallery",
     name: "gallery",
     component: Gallery
-  },
+  }
 ];
 
 export const router = new VueRouter({

@@ -11,13 +11,7 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  PropType,
-  Ref,
-  ref
-} from "@vue/composition-api";
+import { computed, defineComponent, PropType } from "@vue/composition-api";
 
 export default defineComponent({
   name: "GalleryNavigation",
@@ -26,13 +20,23 @@ export default defineComponent({
       type: Array as PropType<string[]>,
       default: () => []
     },
+    currentSeed: {
+      type: String as PropType<string>,
+      required: true
+    },
     navigate: {
       type: Function as PropType<() => string>,
       default: () => null
     }
   },
   setup(props, context) {
-    const index: Ref<number> = ref(0);
+    const index = computed(function() {
+      const currentSeedIndex = props.seeds.findIndex(
+        seed => seed === props.currentSeed
+      );
+
+      return currentSeedIndex !== -1 ? currentSeedIndex : 0;
+    });
 
     const canNavigateToPrevious = computed(function() {
       return index.value <= 0;
@@ -44,15 +48,13 @@ export default defineComponent({
 
     function previous() {
       if (canNavigateToPrevious) {
-        index.value--;
-        context.emit("navigate", props.seeds[index.value]);
+        context.emit("navigate", props.seeds[index.value - 1]);
       }
     }
 
     function next() {
       if (canNavigateToNext) {
-        index.value++;
-        context.emit("navigate", props.seeds[index.value]);
+        context.emit("navigate", props.seeds[index.value + 1]);
       }
     }
 
@@ -66,4 +68,3 @@ export default defineComponent({
   }
 });
 </script>
-

@@ -6,7 +6,7 @@
         The image <strong>{{ image.id }}</strong>
       </p>
       <annotation-layer :annotations="imageAnnotations">
-        <img :src="image.src" :alt="image.id">
+        <img :src="image.src" :alt="image.id" />
       </annotation-layer>
     </div>
   </div>
@@ -37,7 +37,7 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const annotations: Ref<Annotation[]> = inject("annotations");
+    const annotations = inject("annotations") as Ref<Annotation[]>;
     const imageAnnotations = computed(function() {
       return annotations.value.filter(
         (annotation: Annotation) => annotation.imageId === props.seed
