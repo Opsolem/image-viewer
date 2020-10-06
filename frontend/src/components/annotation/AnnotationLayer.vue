@@ -3,12 +3,12 @@
     <slot></slot>
     <svg xmlns="http://www.w3.org/2000/svg">
       <annotation-polygon
-        v-for="polygon in polygons"
+        v-for="polygon in annotationsProps.polygons"
         :key="polygon.key"
         :points="polygon.points"
       />
       <annotation-text
-        v-for="text in texts"
+        v-for="text in annotationsProps.texts"
         :key="text.key"
         :text="text.label"
         :point="text.point"
@@ -18,13 +18,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  PropType,
-  Ref,
-  ref,
-  watch
-} from "@vue/composition-api";
+import { computed, defineComponent, PropType } from "@vue/composition-api";
 import { Annotation, PolygonProps, TextProps } from "@/models/Annotation";
 import Point from "@/models/Point";
 import AnnotationPolygon from "@/components/annotation/AnnotationPolygon.vue";
@@ -43,37 +37,34 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const polygons: Ref<PolygonProps[]> = ref([]);
-    const texts: Ref<TextProps[]> = ref([]);
-
-    function computeAnnotationProps(annotations: Annotation[]) {
-      polygons.value = annotations.map((annotation: Annotation) => ({
-        key: `polygon_${annotation.id}`,
-        points: annotation.points
-      }));
+    const annotationsProps = computed(function() {
+      const polygons: PolygonProps[] = props.annotations.map(
+        (annotation: Annotation) => ({
+          key: `polygon_${annotation.id}`,
+          points: annotation.points
+        })
+      );
 
       // position labels to the top right of each annotation
-      texts.value = annotations.map((annotation: Annotation) => {
-        const textPoint: Point = {
-          x: Math.max(...annotation.points.map(p => p.x)) + 10,
-          y: Math.min(...annotation.points.map(p => p.y)) + 20
-        };
+      const texts: TextProps[] = props.annotations.map(
+        (annotation: Annotation) => {
+          const textPoint: Point = {
+            x: Math.max(...annotation.points.map(p => p.x)) + 10,
+            y: Math.min(...annotation.points.map(p => p.y)) + 20
+          };
 
-        return {
-          key: `text_${annotation.id}`,
-          label: annotation.label,
-          point: textPoint
-        };
-      });
-    }
+          return {
+            key: `text_${annotation.id}`,
+            label: annotation.label,
+            point: textPoint
+          };
+        }
+      );
 
-    // compute annotation props with initial props
-    computeAnnotationProps(props.annotations);
+      return { polygons, texts };
+    });
 
-    // watch props update to re-compute annotations props
-    watch(() => props.annotations, computeAnnotationProps);
-
-    return { polygons, texts };
+    return { annotationsProps };
   }
 });
 </script>
